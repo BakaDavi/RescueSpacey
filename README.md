@@ -8,11 +8,9 @@ Questo documento descrive lo stato attuale del progetto **Rescue Spacey**, un gi
 
 Il progetto è organizzato come segue:
 
-bash
-
-Copia codice
-
-`/RescueSpacey │ ├── /Assets │   ├── player.png      # Immagine del player │   ├── enemy1.png      # Immagine del nemico 1 │   ├── enemy2.png      # Immagine del nemico 2 │   ├── powerup1.png    # Immagine del power-up 1 │   └── powerup2.png    # Immagine del power-up 2 │ ├── /Entities │   ├── Entity.cs       # Classe base per tutte le entità │   ├── Player.cs       # Classe specifica per il Player │   ├── Enemy.cs        # Classe che gestisce tutti i tipi di nemici │   └── PowerUp.cs      # Classe che gestisce tutti i tipi di power-up │ ├── Program.cs          # File principale che contiene il ciclo di gioco └── /bin                # Contiene i file binari compilati`
+```
+/RescueSpacey │ ├── /Assets │   ├── player.png      # Immagine del player │   ├── enemy1.png      # Immagine del nemico 1 │   ├── enemy2.png      # Immagine del nemico 2 │   ├── powerup1.png    # Immagine del power-up 1 │   └── powerup2.png    # Immagine del power-up 2 │ ├── /Entities │   ├── Entity.cs       # Classe base per tutte le entità │   ├── Player.cs       # Classe specifica per il Player │   ├── Enemy.cs        # Classe che gestisce tutti i tipi di nemici │   └── PowerUp.cs      # Classe che gestisce tutti i tipi di power-up │ ├── Program.cs          # File principale che contiene il ciclo di gioco └── /bin                # Contiene i file binari compilati
+```
 
 ## Entità del Gioco
 
