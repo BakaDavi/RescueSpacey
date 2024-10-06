@@ -8,11 +8,25 @@ Questo documento descrive lo stato attuale del progetto **Rescue Spacey**, un gi
 
 Il progetto è organizzato come segue:
 
-bash
-
-Copia codice
-
-`/RescueSpacey │ ├── /Assets │   ├── player.png      # Immagine del player │   ├── enemy1.png      # Immagine del nemico 1 │   ├── enemy2.png      # Immagine del nemico 2 │   ├── powerup1.png    # Immagine del power-up 1 │   └── powerup2.png    # Immagine del power-up 2 │ ├── /Entities │   ├── Entity.cs       # Classe base per tutte le entità │   ├── Player.cs       # Classe specifica per il Player │   ├── Enemy.cs        # Classe che gestisce tutti i tipi di nemici │   └── PowerUp.cs      # Classe che gestisce tutti i tipi di power-up │ ├── Program.cs          # File principale che contiene il ciclo di gioco └── /bin                # Contiene i file binari compilati`
+```
+/RescueSpacey
+│
+├── /Assets
+│   ├── player.png      # Immagine del player
+│   ├── enemy1.png      # Immagine del nemico 1
+│   ├── enemy2.png      # Immagine del nemico 2
+│   ├── powerup1.png    # Immagine del power-up 1
+│   └── powerup2.png    # Immagine del power-up 2
+│
+├── /Entities
+│   ├── Entity.cs       # Classe base per tutte le entità
+│   ├── Player.cs       # Classe specifica per il Player
+│   ├── Enemy.cs        # Classe che gestisce tutti i tipi di nemici
+│   └── PowerUp.cs      # Classe che gestisce tutti i tipi di power-up
+│
+├── Program.cs          # File principale che contiene il ciclo di gioco
+└── /bin                # Contiene i file binari compilati
+```
 
 ## Entità del Gioco
 
@@ -26,15 +40,15 @@ Il **Player** è controllato dall'utente tramite le frecce direzionali. Ha 100 p
 
 Il progetto include due tipi di nemici, gestiti dalla classe **Enemy**. Ogni nemico ha comportamenti diversi in base al tipo:
 
-1.  **Enemy1**: Si muove lentamente nello spazio di gioco e ha 50 punti vita.
-2.  **Enemy2**: Si muove più velocemente rispetto a Enemy1 e ha 70 punti vita.
+1.  **Enemy1**: Ha lo sprite di King Dedede, muore se premi spazio.
+2.  **Enemy2**: Ha lo sprite di Ganon, non fa niente.
 
 ### Power-Up
 
 Il gioco include due tipi di power-up, gestiti dalla classe **PowerUp**. I power-up sono oggetti che possono fornire bonus al player quando raccolti.
 
-1.  **PowerUp1**: Resta fermo nello spazio di gioco.
-2.  **PowerUp2**: Ha un comportamento di movimento, come spostamenti verticali o lampeggiamento.
+1.  **PowerUp1**: Ha lo sprite di Heavy Machine Gun.
+2.  **PowerUp2**: Ha lo sprite del fungo rosso.
 
 ## Ciclo di Gioco
 
