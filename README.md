@@ -2,7 +2,8 @@
 
 ## Introduzione
 
-Questo documento descrive lo stato attuale del progetto **Rescue Spacey**, un gioco 2D sviluppato utilizzando la libreria **AIV.Fast2D**. Il progetto include un **player**, due tipi di **nemici** e due tipi di **power-up**. Ogni entità ha comportamenti distinti e viene gestita attraverso classi che ereditano da una classe base chiamata **Entity**.
+Questo documento descrive lo stato attuale del progetto **Rescue Spacey**, un gioco 2D sviluppato utilizzando la libreria **AIV.Fast2D**. Il progetto include un **player**, due tipi di **nemici** e due tipi di **power-up**. Ogni entità ha comportamenti distinti e viene gestita attraverso classi che ereditano da una classe base chiamata **Entity**
+
 
 ## Struttura del Progetto
 
@@ -34,21 +35,21 @@ Il gioco attualmente include le seguenti entità:
 
 ### Player
 
-Il **Player** è controllato dall'utente tramite le frecce direzionali. Ha 100 punti vita (**hp**) e può muoversi liberamente nello spazio di gioco. La classe **Player** eredita dalla classe base **Entity** e gestisce il movimento del personaggio.
+Il **Player** è controllato dall'utente tramite le frecce direzionali. La classe **Player** eredita dalla classe base **Entity** e gestisce il movimento del personaggio e la salute del player. Il player può subire danni se entra in collisione con i nemici e, se la sua salute scende a 0, viene rimosso dal gioco.
 
 ### Nemici
 
 Il progetto include due tipi di nemici, gestiti dalla classe **Enemy**. Ogni nemico ha comportamenti diversi in base al tipo:
 
-1.  **Enemy1**: Ha lo sprite di King Dedede, muore se premi spazio.
-2.  **Enemy2**: Ha lo sprite di Ganon, non fa niente.
+-   **Enemy1**: Si muove lentamente e ha 50 punti vita e 10 di attacco.
+-   **Enemy2**: Si muove più velocemente e ha 70 punti vita e 20 di attacco.
 
 ### Power-Up
 
-Il gioco include due tipi di power-up, gestiti dalla classe **PowerUp**. I power-up sono oggetti che possono fornire bonus al player quando raccolti.
+Il gioco include due tipi di power-up, gestiti dalla classe **PowerUp**. I power-up sono oggetti che possono fornire bonus al player quando raccolti:
 
-1.  **PowerUp1**: Ha lo sprite di Heavy Machine Gun.
-2.  **PowerUp2**: Ha lo sprite del fungo rosso.
+-   **PowerUp1**: Un power-up stazionario.
+-   **PowerUp2**: Un power-up che si muove o lampeggia.
 
 ## Ciclo di Gioco
 
@@ -58,10 +59,15 @@ Il ciclo di gioco è gestito all'interno della classe **Program** nel file `Prog
 2.  **Draw**: Disegna tutte le entità nella finestra di gioco.
 3.  **Input Handling**: Gestisce gli input da tastiera per il movimento del player e la gestione dei danni ai nemici.
 
+## Gestione delle Collisioni
+
+Le collisioni tra il player e le altre entità vengono gestite nel ciclo di gioco. Se il player collide con un nemico, subisce danni basati sull'attributo `Atk` del nemico. Se la salute del player scende a 0, viene rimosso dalla scena.
+
 ## Future Espansioni
 
 Possibili miglioramenti e aggiunte al progetto includono:
 
-1.  **Gestione delle collisioni**: Aggiungere la rilevazione delle collisioni tra il player e i power-up per raccogliere bonus, o tra il player e i nemici.
-2.  **Interazioni avanzate**: Implementare logiche più complesse per i nemici, come la capacità di inseguire il player o attaccarlo.
-3.  **Bonus dai Power-Up**: Aggiungere effetti specifici quando il player raccoglie un power-up, come incrementi temporanei di velocità o invulnerabilità.
+1.  **Gestione avanzata delle collisioni**: Aggiungere più tipi di collisioni, come tra nemici e power-up o tra entità diverse.
+2.  **Effetti visivi**: Aggiungere animazioni o effetti visivi quando il player o i nemici vengono distrutti.
+3.  **Bonus dai Power-Up**: Implementare effetti specifici che i power-up conferiscono al player quando raccolti.
+
