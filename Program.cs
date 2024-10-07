@@ -35,11 +35,11 @@ namespace MyFast2DGame
             activeEntities.Add(enemy2);
 
             // Crea il power-up 1
-            PowerUp powerUp1 = new PowerUp(1, "C:\\Users\\Baka\\source\\repos\\RescueSpacey\\Assets\\PowerUp1.png", new Vector2(200, 200));
+            PowerUp powerUp1 = new PowerUp(1, "C:\\Users\\Baka\\source\\repos\\RescueSpacey\\Assets\\Sprite_powerup_invcibile.png", new Vector2(200, 200));
             activeEntities.Add(powerUp1);
 
             // Crea il power-up 2
-            PowerUp powerUp2 = new PowerUp(2, "C:\\Users\\Baka\\source\\repos\\RescueSpacey\\Assets\\PowerUp2.png", new Vector2(400, 400));
+            PowerUp powerUp2 = new PowerUp(2, "C:\\Users\\Baka\\source\\repos\\RescueSpacey\\Assets\\Sprite_powerup_potenzasparo.png", new Vector2(400, 400));
             activeEntities.Add(powerUp2);
 
             // Crea 20 proiettili e li aggiunge alla lista delle entità inattive

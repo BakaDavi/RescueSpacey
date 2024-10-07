@@ -82,7 +82,7 @@ namespace RescueSpacey.Entities
         }
 
         // Metodo per infliggere danni all'entità
-        public void TakeDamage(int damage)
+        public virtual void TakeDamage(int damage)
         {
             Hp -= damage;  // Riduce i punti vita dell'entità
             if (Hp <= 0)
