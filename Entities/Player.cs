@@ -1,29 +1,32 @@
 ﻿using Aiv.Fast2D;
 using MyFast2DGame;
 using OpenTK;
-using System;
 
 namespace RescueSpacey.Entities
 {
     public class Player : Entity
     {
-        private int health;  // Attributo per la salute del player
+        public int Atk { get; private set; }  // Proprietà pubblica per l'attacco
+        private float fireRate;
+        private float fireCooldown;
 
-        public Player(string texturePath, Vector2 initialPosition, int hp)
+        public Player(string texturePath, Vector2 initialPosition, int hp, int atk)
             : base(texturePath, initialPosition, hp)
         {
-            health = hp;  // Imposta la salute iniziale del player
+            this.Atk = atk;  // Imposta il valore di attacco
+            fireRate = 0.5f;  // Imposta la frequenza di fuoco
+            fireCooldown = 0f;  // Timer di cooldown per il fuoco
         }
 
         public override void Update()
         {
-            // Reset dell'accelerazione a ogni frame
-            Vector2 newAcceleration = Vector2.Zero;  // Crea una nuova accelerazione
+            // Inizializza l'accelerazione a zero per questo frame
+            Vector2 newAcceleration = Vector2.Zero;
 
-            // Valore di accelerazione unificato per tutte le direzioni
+            // Valore uniforme di accelerazione
             float accelerationValue = 150f;
 
-            // Accelera in base all'input, mantenendo lo stesso valore per tutte le direzioni
+            // Imposta l'accelerazione in base all'input dell'utente
             if (Game.window.GetKey(KeyCode.Right))
                 newAcceleration.X = accelerationValue;  // Accelerazione verso destra
             if (Game.window.GetKey(KeyCode.Left))
@@ -33,11 +36,40 @@ namespace RescueSpacey.Entities
             if (Game.window.GetKey(KeyCode.Down))
                 newAcceleration.Y = accelerationValue;  // Accelerazione verso il basso
 
-            // Imposta la nuova accelerazione tramite la proprietà della classe base
+            // Imposta la nuova accelerazione nell'entità
             Acceleration = newAcceleration;
 
-            // Chiama il metodo Update della classe base per aggiornare la posizione e la velocità
+            // Chiama l'Update della classe base per aggiornare la posizione
             base.Update();
+
+            // Gestione del fuoco dei proiettili
+            if (fireCooldown <= 0f && Game.window.GetKey(KeyCode.X))
+            {
+                Shoot();  // Spara un proiettile
+                fireCooldown = fireRate;  // Reset del cooldown
+            }
+
+            // Riduci il cooldown del fuoco
+            if (fireCooldown > 0f)
+            {
+                fireCooldown -= Game.window.DeltaTime;
+            }
+        }
+
+        private void Shoot()
+        {
+            // Trova un proiettile inattivo nella lista delle entità inattive
+            Bullet bullet = (Bullet)Game.inactiveEntities.Find(e => e is Bullet);
+
+            if (bullet != null)
+            {
+                // Posiziona il proiettile di fronte al player
+                bullet.Position = new Vector2(Position.X + Sprite.Width, Position.Y + Sprite.Height / 2);
+
+                // Rimuovi il proiettile dalla lista inattiva e aggiungilo alla lista attiva
+                Game.inactiveEntities.Remove(bullet);
+                Game.activeEntities.Add(bullet);
+            }
         }
     }
 }

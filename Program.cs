@@ -23,7 +23,7 @@ namespace MyFast2DGame
             inactiveEntities = new List<Entity>();
 
             // Crea il player
-            player = new Player("C:\\Users\\Baka\\source\\repos\\RescueSpacey\\Assets\\astronave_test.gif", new Vector2(360, 360), 100);
+            player = new Player("C:\\Users\\Baka\\source\\repos\\RescueSpacey\\Assets\\astronave_test.gif", new Vector2(360, 360), 100, 100);
             activeEntities.Add(player);
 
             // Crea il nemico 1 (con 50 punti vita e 10 di atk)
@@ -41,6 +41,13 @@ namespace MyFast2DGame
             // Crea il power-up 2
             PowerUp powerUp2 = new PowerUp(2, "C:\\Users\\Baka\\source\\repos\\RescueSpacey\\Assets\\PowerUp2.png", new Vector2(400, 400));
             activeEntities.Add(powerUp2);
+
+            // Crea 20 proiettili e li aggiunge alla lista delle entità inattive
+            for (int i = 0; i < 20; i++)
+            {
+                Bullet bullet = new Bullet(new Vector2(-100, -100));  // Posiziona i proiettili fuori schermo inizialmente
+                inactiveEntities.Add(bullet);
+            }
         }
 
         public void Run()
@@ -55,17 +62,35 @@ namespace MyFast2DGame
 
         private void Update()
         {
+            List<Entity> entitiesToRemove = new List<Entity>();  // Lista temporanea per le entità da rimuovere
+            List<Entity> currentEntities = new List<Entity>(activeEntities);  // Crea una copia delle entità attive
+
             // Itera su tutte le entità attive
-            for (int i = 0; i < activeEntities.Count; i++)
+            for (int i = 0; i < currentEntities.Count; i++)
             {
-                // Verifica collisioni tra il player e altre entità
-                if (activeEntities[i] is Player playerEntity)
+                // Gestione collisioni tra proiettili e nemici
+                if (currentEntities[i] is Bullet bullet)
                 {
-                    for (int j = 0; j < activeEntities.Count; j++)
+                    for (int j = 0; j < currentEntities.Count; j++)
                     {
-                        if (i != j && playerEntity.CheckCollision(activeEntities[j]))
+                        if (currentEntities[j] is Enemy enemy && bullet.CheckCollision(enemy))
                         {
-                            if (activeEntities[j] is Enemy enemy)
+                            // Il nemico subisce danno pari all'attacco del player
+                            enemy.TakeDamage(player.Atk);
+                            entitiesToRemove.Add(bullet);  // Segna il proiettile per la rimozione
+                            break;
+                        }
+                    }
+                }
+
+                // Verifica collisioni tra il player e altre entità
+                if (currentEntities[i] is Player playerEntity)
+                {
+                    for (int j = 0; j < currentEntities.Count; j++)
+                    {
+                        if (i != j && playerEntity.CheckCollision(currentEntities[j]))
+                        {
+                            if (currentEntities[j] is Enemy enemy)
                             {
                                 // Applica il danno al player basato sull'attacco del nemico
                                 playerEntity.TakeDamage(enemy.Atk);
@@ -75,13 +100,19 @@ namespace MyFast2DGame
                 }
 
                 // Aggiorna ogni entità
-                activeEntities[i].Update();
+                currentEntities[i].Update();
+            }
+
+            // Rimuovi le entità segnate per la rimozione dalla lista originale
+            foreach (Entity entity in entitiesToRemove)
+            {
+                activeEntities.Remove(entity);
             }
         }
 
         private void Draw()
         {
-            // Disegna tutte le entità
+            // Disegna tutte le entità attive
             foreach (var entity in activeEntities)
             {
                 entity.Draw();
