@@ -45,7 +45,7 @@ Il progetto è organizzato come segue:
 -   **`MaxSpeed`** (`float`): La velocità massima che l'entità può raggiungere.
 -   **`Friction`** (`float`): L'attrito che rallenta gradualmente l'entità quando non ci sono input o accelerazione.
 -   **`Sprite`** (`Sprite`): Lo sprite associato all'entità, utilizzato per disegnare l'entità a schermo.
--   **`Texture`** (`Texture`): La texture associata allo sprite dell'entità.
+-   **`Texture`** (`Texture`): La texture associata allo sprite dell'entità. Ho messo il percorso assoluto percHé non trovo la sintassi corretta per il percorso relativo e non compila.
 -   **`Hp`** (`int`): I punti vita dell'entità. Quando scendono a 0 o meno, l'entità viene distrutta.
 
 #### **Metodi:**
