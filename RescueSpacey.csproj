@@ -90,13 +90,15 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Content Include="Assets\Enemy1.png" />
-    <Content Include="Assets\Enemy2.png" />
-    <Content Include="Assets\Player.png" />
-    <Content Include="Assets\PowerUp1.png" />
-    <Content Include="Assets\PowerUp2.png" />
+    <Content Include="Assets\bullet.png" />
+    <Content Include="Assets\enemy1.png" />
+    <Content Include="Assets\enemy2.png" />
+    <Content Include="Assets\player.gif" />
+    <Content Include="Assets\player2.gif" />
+    <Content Include="Assets\player3.gif" />
+    <Content Include="Assets\powerup1.png" />
+    <Content Include="Assets\powerup2.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
