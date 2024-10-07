@@ -29,45 +29,97 @@ Il progetto è organizzato come segue:
 └── /bin                # Contiene i file binari compilati
 ```
 
-## Entità del Gioco
+## 1\. **Classe `Entity`**
 
-Il gioco attualmente include le seguenti entità:
+La classe base per tutte le entità del gioco. Ogni entità ha una posizione, una velocità, un'accelerazione, un valore di punti vita (`Hp`), e uno sprite visibile.
 
-### Player
+### Attributi:
 
-Il **Player** è controllato dall'utente tramite le frecce direzionali. La classe **Player** eredita dalla classe base **Entity** e gestisce il movimento del personaggio e la salute del player. Il player può subire danni se entra in collisione con i nemici e, se la sua salute scende a 0, viene rimosso dal gioco.
+-   **Position**: La posizione corrente dell'entità nel mondo di gioco.
+-   **Velocity**: La velocità corrente dell'entità.
+-   **Acceleration**: Il valore di accelerazione dell'entità, aggiornato in base all'input.
+-   **MaxSpeed**: La velocità massima che l'entità può raggiungere.
+-   **Sprite**: Lo sprite grafico associato all'entità.
+-   **Texture**: La texture utilizzata per disegnare lo sprite.
+-   **Hp**: I punti vita dell'entità.
 
-### Nemici
+### Metodi:
 
-Il progetto include due tipi di nemici, gestiti dalla classe **Enemy**. Ogni nemico ha comportamenti diversi in base al tipo:
+-   **Entity(string texturePath, Vector2 initialPosition, int hp)**: Costruttore che inizializza la texture, la posizione, e i punti vita.
+-   **Update()**: Aggiorna la posizione e la velocità dell'entità in base all'accelerazione. Limita la velocità massima e arresta l'entità se la velocità è troppo bassa.
+-   **Draw()**: Disegna lo sprite dell'entità sullo schermo.
+-   **Destroy()**: Distrugge l'entità, rimuovendola dalla lista delle entità attive.
+-   **TakeDamage(int damage)**: Riduce i punti vita dell'entità in base ai danni ricevuti e distrugge l'entità se i punti vita scendono a zero.
+-   **CheckCollision(Entity other)**: Controlla se questa entità sta collidendo con un'altra entità.
+* * *
 
--   **Enemy1**: Si muove lentamente e ha 50 punti vita e 10 di attacco.
--   **Enemy2**: Si muove più velocemente e ha 70 punti vita e 20 di attacco.
+## 2\. **Classe `Player`**
 
-### Power-Up
+Questa classe eredita da `Entity` e rappresenta il giocatore nel gioco. Gestisce il movimento del player attraverso l'input da tastiera.
 
-Il gioco include due tipi di power-up, gestiti dalla classe **PowerUp**. I power-up sono oggetti che possono fornire bonus al player quando raccolti:
+### Attributi:
 
--   **PowerUp1**: Un power-up stazionario.
--   **PowerUp2**: Un power-up che si muove o lampeggia.
+-   **health**: Salute del giocatore, definita nel costruttore.
 
-## Ciclo di Gioco
+### Metodi:
 
-Il ciclo di gioco è gestito all'interno della classe **Program** nel file `Program.cs`. Il ciclo esegue continuamente le seguenti operazioni:
+-   **Player(string texturePath, Vector2 initialPosition, int hp)**: Costruttore che inizializza la posizione e la salute del giocatore.
+-   **Update()**: Gestisce l'input del giocatore. Imposta un'accelerazione fissa basata sulla direzione dell'input (tasti freccia). Se non c'è input, l'accelerazione viene azzerata.
+**Dettagli del Movimento**: L'accelerazione viene applicata in base ai tasti premuti (su, giù, sinistra, destra). Quando non si preme nessun tasto, l'accelerazione torna a zero, il che significa che il giocatore smette di accelerare.
 
-1.  **Update**: Aggiorna lo stato di tutte le entità presenti nel gioco (player, nemici, power-up).
-2.  **Draw**: Disegna tutte le entità nella finestra di gioco.
-3.  **Input Handling**: Gestisce gli input da tastiera per il movimento del player e la gestione dei danni ai nemici.
+* * *
 
-## Gestione delle Collisioni
+## 3\. **Classe `PowerUp`**
 
-Le collisioni tra il player e le altre entità vengono gestite nel ciclo di gioco. Se il player collide con un nemico, subisce danni basati sull'attributo `Atk` del nemico. Se la salute del player scende a 0, viene rimosso dalla scena.
+Questa classe rappresenta i power-up nel gioco. Ogni power-up ha un tipo (ad es., tipo 1 o tipo 2) che ne determina il comportamento.
 
-## Future Espansioni
+### Attributi:
 
-Possibili miglioramenti e aggiunte al progetto includono:
+-   **Type**: Identifica il tipo di power-up (ad esempio, `1` o `2`).
 
-1.  **Gestione avanzata delle collisioni**: Aggiungere più tipi di collisioni, come tra nemici e power-up o tra entità diverse.
-2.  **Effetti visivi**: Aggiungere animazioni o effetti visivi quando il player o i nemici vengono distrutti.
-3.  **Bonus dai Power-Up**: Implementare effetti specifici che i power-up conferiscono al player quando raccolti.
+### Metodi:
 
+-   **PowerUp(int type, string texturePath, Vector2 initialPosition)**: Costruttore che imposta il tipo di power-up e la posizione iniziale.
+-   **Update()**: Aggiorna il comportamento del power-up in base al tipo (ad esempio, tipo 1 potrebbe rimanere fermo, mentre tipo 2 potrebbe muoversi).
+* * *
+
+## 4\. **Classe `Enemy`**
+
+Questa classe rappresenta i nemici nel gioco. Ogni nemico ha un tipo (ad es., tipo 1 o tipo 2) e un valore di attacco (`Atk`), che determina quanto danno infligge al giocatore.
+
+### Attributi:
+
+-   **Type**: Identifica il tipo di nemico.
+-   **Atk**: Il valore di attacco del nemico, che determina quanti danni infligge al giocatore durante una collisione.
+
+### Metodi:
+
+-   **Enemy(int type, string texturePath, Vector2 initialPosition, int hp, int atk)**: Costruttore che imposta il tipo di nemico, i punti vita, e l'attacco.
+-   **Update()**: Aggiorna il movimento del nemico in base al tipo (ad esempio, tipo 1 potrebbe muoversi lentamente, mentre tipo 2 potrebbe muoversi più velocemente).
+* * *
+
+## 5\. **Classe `Game`**
+
+La classe `Game` gestisce la logica principale del gioco, inclusa la creazione della finestra, l'aggiornamento delle entità attive e la gestione delle collisioni.
+
+### Attributi:
+
+-   **window**: La finestra del gioco.
+-   **activeEntities**: Lista delle entità attive nel gioco.
+-   **inactiveEntities**: Lista delle entità inattive.
+-   **player**: L'istanza del giocatore.
+
+### Metodi:
+
+-   **Game()**: Costruttore che crea la finestra di gioco, inizializza le liste delle entità e crea il giocatore, i nemici, e i power-up.
+-   **Run()**: Il ciclo principale del gioco, che chiama `Update()` e `Draw()` ogni frame.
+-   **Update()**: Aggiorna lo stato di tutte le entità attive e gestisce le collisioni tra il giocatore e altre entità (nemici e power-up).
+-   **Draw()**: Disegna tutte le entità attive sullo schermo.
+* * *
+
+## 6\. **Dettagli sul Movimento e l'Accelerazione**
+
+Il sistema di movimento è basato su un modello di accelerazione. Ogni entità ha un valore di accelerazione che viene applicato ogni frame:
+
+-   **Player**: L'accelerazione del player viene gestita in base all'input. Quando il giocatore preme i tasti direzionali, l'accelerazione aumenta in quella direzione. Se non ci sono input, l'accelerazione viene riportata a zero, fermando la crescita della velocità.
+-   **Enemy**: Ogni nemico ha un comportamento di movimento diverso in base al tipo. Ad esempio, un nemico potrebbe muoversi lentamente in una direzione, mentre un altro potrebbe muoversi più velocemente.
