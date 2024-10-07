@@ -157,4 +157,5 @@ Il progetto è organizzato come segue:
 5.  **Sfondo**: Facendo muovere 3 sfondi con le stelle di diversa luminosità a 3 velocità diverse si ottiene un bellissimo effetto parallasse.
 6.  **Title-Screen, Game Over, Win**: In program.cs si può implementare una macchina a stati che definisce in quale scena ti trovi ed è possibile quindi passare da Title Screen a Partita a Game Over.
 7.  **Condizione di vittoria**: Dopo 5 minuti dall'inizio della partita, se il giocatore è ancora in vita vince la partita.
+8.  **Animazioni**: Non so se è possibile utilizzare le gif per le animazioni, ma in caso contrario posso usare uno spritesheet o una serie di immagini per ogni frame e modificare la texture in un arco di tempo per regolare la velocità di animazione.
 
