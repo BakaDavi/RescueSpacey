@@ -8,19 +8,29 @@ namespace RescueSpacey.Entities
         // Percorso statico per la texture del proiettile
         private static readonly string BulletTexturePath = "C:\\Users\\Baka\\source\\repos\\RescueSpacey\\Assets\\bullet.png";
 
+        // Posizione iniziale nullabile (Vector2? permette di avere null)
+        private Vector2? InitialPosition = null;
+
         public Bullet(Vector2 initialPosition)
-            : base(BulletTexturePath, initialPosition, 1)  // Usa il percorso della texture e HP minimi
+            : base(BulletTexturePath, initialPosition, 1)
         {
-            MaxSpeed = 300f;  // Imposta una velocità elevata per i proiettili
+            MaxSpeed = 300f; // Imposta una velocità elevata per i proiettili
             Velocity = new Vector2(MaxSpeed, 0);  // I proiettili si muovono verso destra
+            Friction = 1;  // Nessun attrito per i proiettili
         }
 
         public override void Update()
         {
+            // Se InitialPosition è null, impostala alla posizione corrente
+            if (InitialPosition == null)
+            {
+                InitialPosition = Position;  // Assegna tutta la posizione come Vector2
+            }
+
             base.Update();  // Aggiorna la posizione del proiettile
 
-            // Se il proiettile esce dalla finestra di gioco, torna alla lista inattiva
-            if (Position.X > Game.window.Width)
+            // Se il proiettile ha percorso più di 300 pixel a destra rispetto alla posizione iniziale
+            if (Position.X - InitialPosition.Value.X > 300f)
             {
                 Destroy();
             }
@@ -28,7 +38,9 @@ namespace RescueSpacey.Entities
 
         public override void Destroy()
         {
-            // Sposta il proiettile dalla lista attiva a quella inattiva
+            InitialPosition = null;  // Resetta la posizione iniziale
+
+            // Rimuove il proiettile dalla lista attiva e lo aggiunge alla lista inattiva
             Game.activeEntities.Remove(this);
             Game.inactiveEntities.Add(this);
         }
