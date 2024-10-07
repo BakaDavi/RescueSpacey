@@ -17,21 +17,27 @@ namespace RescueSpacey.Entities
 
         public override void Update()
         {
-            // Movimento con frecce direzionali
-            Vector2 newPosition = Position;  // Crea una copia della posizione corrente
+            // Reset dell'accelerazione a ogni frame
+            Vector2 newAcceleration = Vector2.Zero;  // Crea una nuova accelerazione
 
+            // Valore di accelerazione unificato per tutte le direzioni
+            float accelerationValue = 150f;
+
+            // Accelera in base all'input, mantenendo lo stesso valore per tutte le direzioni
             if (Game.window.GetKey(KeyCode.Right))
-                newPosition.X += 200 * Game.window.DeltaTime;
+                newAcceleration.X = accelerationValue;  // Accelerazione verso destra
             if (Game.window.GetKey(KeyCode.Left))
-                newPosition.X -= 200 * Game.window.DeltaTime;
+                newAcceleration.X = -accelerationValue;  // Accelerazione verso sinistra
             if (Game.window.GetKey(KeyCode.Up))
-                newPosition.Y -= 200 * Game.window.DeltaTime;
+                newAcceleration.Y = -accelerationValue;  // Accelerazione verso l'alto
             if (Game.window.GetKey(KeyCode.Down))
-                newPosition.Y += 200 * Game.window.DeltaTime;
+                newAcceleration.Y = accelerationValue;  // Accelerazione verso il basso
 
-            Position = newPosition;  // Assegna la nuova posizione
+            // Imposta la nuova accelerazione tramite la proprietà della classe base
+            Acceleration = newAcceleration;
 
-            base.Update();  // Richiama il metodo Update della classe base
+            // Chiama il metodo Update della classe base per aggiornare la posizione e la velocità
+            base.Update();
         }
     }
 }
