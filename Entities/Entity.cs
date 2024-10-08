@@ -78,7 +78,9 @@ namespace RescueSpacey.Entities
         public virtual void Destroy()
         {
             Console.WriteLine($"{this.GetType().Name} è stato distrutto!");
-            Game.activeEntities.Remove(this);  // Rimuove l'entità dalla lista delle entità attive
+            // Rimuove il proiettile dalla lista attiva e lo aggiunge alla lista inattiva
+            Game.activeEntities.Remove(this);
+            Game.inactiveEntities.Add(this);
         }
 
         // Metodo per infliggere danni all'entità

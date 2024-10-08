@@ -39,10 +39,6 @@ namespace RescueSpacey.Entities
         public override void Destroy()
         {
             InitialPosition = null;  // Resetta la posizione iniziale
-
-            // Rimuove il proiettile dalla lista attiva e lo aggiunge alla lista inattiva
-            Game.activeEntities.Remove(this);
-            Game.inactiveEntities.Add(this);
         }
     }
 }

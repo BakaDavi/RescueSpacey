@@ -3,6 +3,7 @@ using OpenTK;
 using RescueSpacey.Entities;
 using System;
 using System.Collections.Generic;
+using static RescueSpacey.Entities.Player;
 
 namespace MyFast2DGame
 {
@@ -23,7 +24,7 @@ namespace MyFast2DGame
             inactiveEntities = new List<Entity>();
 
             // Crea il player
-            player = new Player("Assets/player.gif", new Vector2(360, 360), 100, 100);
+            player = new Player(new Vector2(360, 360), 100, 100);
             activeEntities.Add(player);
 
             // Crea il nemico 1 (con 50 punti vita e 10 di atk)
@@ -39,7 +40,7 @@ namespace MyFast2DGame
             activeEntities.Add(powerUp1);
 
             // Crea il power-up 2
-            PowerUp powerUp2 = new PowerUp(2, "Assets/powerup2.png", new Vector2(400, 400));
+            PowerUp powerUp2 = new PowerUp(2, "Assets/powerup2.png", new Vector2(600, 400));
             activeEntities.Add(powerUp2);
 
             // Crea 20 proiettili e li aggiunge alla lista delle entità inattive
@@ -94,6 +95,20 @@ namespace MyFast2DGame
                             {
                                 // Applica il danno al player basato sull'attacco del nemico
                                 playerEntity.TakeDamage(enemy.Atk);
+                            }
+                            else if (currentEntities[j] is PowerUp powerUp)
+                            {
+                                // Cambia lo stato del player in base al tipo di power-up
+                                if (powerUp.Type == 1) // Power-up 1: invulnerabilità
+                                {
+                                    playerEntity.ChangeState(PlayerState.Invulnerable);
+                                }
+                                else if (powerUp.Type == 2) // Power-up 2: potenziamento
+                                {
+                                    playerEntity.ChangeState(PlayerState.PoweredUp);
+                                }
+                                // Segna il power-up per la rimozione
+                                entitiesToRemove.Add(powerUp);
                             }
                         }
                     }
