@@ -13,7 +13,9 @@ Il progetto è organizzato come segue:
 /RescueSpacey
 │
 ├── /Assets
-│   ├── player.png      # Immagine del player
+│   ├── player.gif      # Immagine del player
+│   ├── player2.gif      # Immagine del player invulnerabile
+│   ├── player3.gif      # Immagine del player potenziato
 │   ├── enemy1.png      # Immagine del nemico 1
 │   ├── enemy2.png      # Immagine del nemico 2
 │   ├── powerup1.png    # Immagine del power-up 1
@@ -31,131 +33,137 @@ Il progetto è organizzato come segue:
 └── /bin                # Contiene i file binari compilati
 ```
 
-### **1\. Classe `Entity`**
+## **Entity**
 
-#### **Riassunto del funzionamento della classe:**
+### **Riassunto**:
 
-`Entity` è la classe base per tutte le entità presenti nel gioco, come il giocatore, i nemici, i proiettili e i power-up. Gestisce attributi comuni come la posizione, la velocità e la texture associata, oltre a metodi per aggiornare, disegnare e verificare le collisioni tra entità.
+`Entity` è la classe base da cui derivano tutte le entità del gioco. Gestisce proprietà comuni come posizione, velocità, accelerazione, attrito, punti vita e texture. Fornisce anche metodi per il movimento, il disegno sullo schermo, la gestione delle collisioni e la distruzione dell'entità.
 
-#### **Attributi:**
+### **Attributi**:
 
--   **`Position`** (`Vector2`): La posizione corrente dell'entità nel mondo di gioco.
--   **`Velocity`** (`Vector2`): La velocità corrente dell'entità. Questa viene sommata alla posizione in ogni aggiornamento.
--   **`Acceleration`** (`Vector2`): L'accelerazione applicata all'entità. Influisce sulla velocità nel tempo.
--   **`MaxSpeed`** (`float`): La velocità massima che l'entità può raggiungere.
--   **`Friction`** (`float`): L'attrito che rallenta gradualmente l'entità quando non ci sono input o accelerazione.
--   **`Sprite`** (`Sprite`): Lo sprite associato all'entità, utilizzato per disegnare l'entità a schermo.
--   **`Texture`** (`Texture`): La texture associata allo sprite dell'entità. Ho messo il percorso assoluto percHé non trovo la sintassi corretta per il percorso relativo e non compila.
--   **`Hp`** (`int`): I punti vita dell'entità. Quando scendono a 0 o meno, l'entità viene distrutta.
+-   **Position** (`Vector2`): La posizione attuale dell'entità.
+-   **Velocity** (`Vector2`): La velocità attuale dell'entità.
+-   **Acceleration** (`Vector2`): L'accelerazione applicata all'entità.
+-   **MaxSpeed** (`float`): Velocità massima consentita all'entità.
+-   **Friction** (`float`): Coefficiente di attrito che rallenta l'entità.
+-   **Sprite** (`Sprite`): Sprite associato all'entità.
+-   **Texture** (`Texture`): Texture caricata dallo sprite.
+-   **Hp** (`int`): Punti vita dell'entità.
 
-#### **Metodi:**
+### **Metodi**:
 
--   **`Update()`**: Aggiorna lo stato dell'entità, modificando la posizione in base alla velocità e all'accelerazione, e applica l'attrito per rallentare l'entità.
--   **`Draw()`**: Disegna l'entità sullo schermo utilizzando lo sprite e la texture associata.
--   **`TakeDamage(int damage)`**: Riduce i punti vita dell'entità del valore `damage` passato come parametro. Se i punti vita scendono a 0, l'entità viene distrutta.
--   **`Destroy()`**: Rimuove l'entità dalla scena, spostandola nella lista delle entità inattive.
--   **`CheckCollision(Entity other)`**: Verifica se questa entità collide con un'altra entità, restituisce `true` se c'è una collisione.
+-   **Entity(string texturePath, Vector2 initialPosition, int hp)**: Costruttore che inizializza l'entità con una texture, una posizione e dei punti vita.
+-   **void Update()**: Aggiorna la posizione dell'entità in base alla velocità e all'accelerazione.
+-   **void Draw()**: Disegna l'entità sullo schermo utilizzando la sua texture e sprite.
+-   **void Destroy()**: Rimuove l'entità dalla lista attiva e la sposta in quella inattiva.
+-   **void TakeDamage(int damage)**: Riduce i punti vita dell'entità in base al danno subito. Se i punti vita scendono a zero, l'entità viene distrutta.
+-   **bool CheckCollision(Entity other)**: Verifica se questa entità sta collidendo con un'altra entità usando i bounding box.
 * * *
 
-### **2\. Classe `Player`**
+## **Player**
 
-#### **Riassunto del funzionamento della classe:**
+### **Riassunto**:
 
-`Player` rappresenta l'entità controllata dal giocatore. Il giocatore può muoversi in tutte le direzioni, sparare proiettili e raccogliere power-up che cambiano il suo stato (invulnerabile o potenziato). Gestisce l'invulnerabilità ed i powerup tramite macchina a stati.
+Il `Player` rappresenta il personaggio controllato dal giocatore. Oltre ai comportamenti di base delle entità, il `Player` ha una macchina a stati che gli consente di passare tra tre stati: normale, invulnerabile e potenziato. Il `Player` può subire danni, diventare invulnerabile e sparare proiettili.
 
-#### **Attributi:**
+### **Attributi**:
 
--   **`Atk`** (`int`): Il potere d'attacco del giocatore, ovvero quanti danni infligge ai nemici quando spara.
--   **`Invulnerability`** (`float`): La durata dell'invulnerabilità in secondi, durante la quale il giocatore non può subire danni.
--   **`CurrentState`** (`PlayerState`): Lo stato corrente del giocatore, che può essere `Normal`, `Invulnerable`, o `PoweredUp`.
--   **`stateTimer`** (`float`): Timer utilizzato per tenere traccia della durata dello stato corrente.
--   **`fireRate`** (`float`): La frequenza con cui il giocatore può sparare proiettili.
--   **`fireCooldown`** (`float`): Timer che impedisce al giocatore di sparare continuamente senza un intervallo.
+-   **Atk** (`int`): Potenza d'attacco del giocatore.
+-   **CurrentState** (`PlayerState`): Stato attuale del giocatore (Normale, Invulnerabile, Potenziato).
+-   **Invulnerability** (`float`): Durata dell'invulnerabilità in secondi.
+-   **PoweredUpDuration** (`float`): Durata dello stato potenziato in secondi.
+-   **fireRate** (`float`): Frequenza di fuoco del giocatore.
+-   **fireCooldown** (`float`): Tempo di attesa tra un colpo e l'altro.
+-   **normalTexture, invincibleTexture, poweredUpTexture** (`string`): Percorsi delle texture in base allo stato.
 
-#### **Metodi:**
+### **Metodi**:
 
--   **`Update()`**: Aggiorna lo stato del giocatore, gestisce l'input per il movimento, la sparatoria e la transizione tra gli stati (Normale, Invulnerabile, Potenziato).
--   **`TakeDamage(int damage)`**: Se il giocatore non è invulnerabile, riduce i suoi punti vita del valore `damage` passato come parametro e lo mette in uno stato invulnerabile per un breve periodo.
--   **`Shoot()`**: Spara un proiettile se il timer del fuoco (`fireCooldown`) è scaduto. Il proiettile viene prelevato dalla lista delle entità inattive e spostato nella lista delle entità attive.
--   **`ChangeState(PlayerState newState)`**: Cambia lo stato del giocatore in base al `newState` passato. Gestisce la transizione tra stati normali, invulnerabili e potenziati.
+-   **Player(Vector2 initialPosition, int hp, int atk)**: Costruttore che inizializza il `Player` con una posizione, punti vita e potenza d'attacco.
+-   **void Update()**: Aggiorna lo stato del giocatore, gestisce il movimento, i timer degli stati e il fuoco.
+-   **void ChangeState(PlayerState newState)**: Cambia lo stato del giocatore e imposta il timer e la texture corretti.
+-   **void TakeDamage(int damage)**: Se il giocatore non è invulnerabile, subisce danni e passa allo stato invulnerabile.
+-   **void Shoot()**: Trova un proiettile dalla lista inattiva e lo spara.
 * * *
 
-### **3\. Classe `PowerUp`**
+## **Bullet**
 
-#### **Riassunto del funzionamento della classe:**
+### **Riassunto**:
 
-`PowerUp` rappresenta gli oggetti che il giocatore può raccogliere. I power-up possono influire sullo stato del giocatore, rendendolo invulnerabile o potenziando il suo attacco.
+La classe `Bullet` rappresenta i proiettili sparati dal giocatore. Si muovono a una velocità costante e vengono distrutti dopo aver percorso 300 pixel.
 
-#### **Attributi:**
+### **Attributi**:
 
--   **`Type`** (`int`): Il tipo di power-up. `1` rende il giocatore invulnerabile, mentre `2` potenzia l'attacco del giocatore.
+-   **MaxSpeed** (`float`): Velocità fissa del proiettile.
+-   **initialPosition** (`Vector2?`): Posizione iniziale del proiettile.
 
-#### **Metodi:**
+### **Metodi**:
 
--   **`Update()`**: Gestisce la logica del power-up, verificando se è stato raccolto dal giocatore.
--   **`Destroy()`**: Rimuove il power-up dalla scena e lo sposta nella lista delle entità inattive una volta raccolto dal giocatore.
+-   **Bullet(Vector2 initialPosition)**: Costruttore che inizializza il proiettile con la posizione iniziale.
+-   **void Update()**: Aggiorna la posizione del proiettile e lo distrugge se percorre più di 300 pixel.
+-   **void Destroy()**: Reimposta la posizione iniziale e rimuove il proiettile dalla lista attiva.
 * * *
 
-### **4\. Classe `Bullet`**
+## **Enemy**
 
-#### **Riassunto del funzionamento della classe:**
+### **Riassunto**:
 
-`Bullet` rappresenta i proiettili sparati dal giocatore. Ogni proiettile viaggia a velocità costante e può infliggere danni ai nemici. I proiettili vengono gestiti tramite un pool, dove i proiettili vengono riciclati.
+`Enemy` rappresenta i nemici del gioco, ognuno con punti vita e un valore di attacco. Diversi tipi di nemici hanno comportamenti di movimento differenti.
 
-#### **Attributi:**
+### **Attributi**:
 
--   **`InitialPosition`** (`Vector2`): La posizione iniziale del proiettile quando viene sparato. Questo è usato per determinare se il proiettile si è allontanato troppo dal punto di origine.
+-   **Type** (`int`): Tipo di nemico, che influisce sul movimento.
+-   **Atk** (`int`): Valore di attacco del nemico.
 
-#### **Metodi:**
+### **Metodi**:
 
--   **`Update()`**: Aggiorna la posizione del proiettile. Se il proiettile si allontana di oltre 300 pixel dalla sua posizione iniziale, viene distrutto.
--   **`Destroy()`**: Rimuove il proiettile dalla lista delle entità attive e lo sposta nella lista delle entità inattive, permettendo al pool di gestire i proiettili riciclati.
+-   **Enemy(int type, string texturePath, Vector2 initialPosition, int hp, int atk)**: Costruttore che inizializza il nemico con il tipo, la posizione iniziale, i punti vita e il valore d'attacco.
+-   **void Update()**: Aggiorna la posizione del nemico in base al tipo (movimento differente per ogni tipo).
 * * *
 
-### **5\. Classe `Enemy`**
+## **PowerUp**
 
-#### **Riassunto del funzionamento della classe:**
+### **Riassunto**:
 
-`Enemy` gestisce i nemici presenti nel gioco. I nemici possono avere comportamenti differenti (ad esempio, movimento sinusoidale per `Enemy1`) e possono infliggere danni al giocatore in caso di collisione.
+`PowerUp` rappresenta i potenziamenti che il giocatore può raccogliere. A seconda del tipo, il giocatore può diventare invulnerabile o potenziato.
 
-#### **Attributi:**
+### **Attributi**:
 
--   **`Atk`** (`int`): La quantità di danni inflitti al giocatore quando si verifica una collisione.
--   **`sinTime`** (`float`): Timer per gestire il movimento sinusoidale del nemico.
+-   **Type** (`int`): Tipo di potenziamento (1 per invulnerabilità, 2 per potenziamento).
 
-#### **Metodi:**
+### **Metodi**:
 
--   **`Update()`**: Aggiorna la posizione e il comportamento del nemico. Se il nemico è del tipo `Enemy1`, viene applicato un movimento sinusoidale lungo l'asse Y.
--   **`TakeDamage(int damage)`**: Riduce i punti vita del nemico e, se i punti vita scendono a 0, il nemico viene distrutto.
+-   **PowerUp(int type, string texturePath, Vector2 initialPosition)**: Costruttore che inizializza il potenziamento con il tipo e la posizione iniziale.
+-   **void Update()**: Esegue la logica specifica per il tipo di potenziamento (ad esempio, movimento o effetti visivi).
 * * *
 
-### **6\. Classe `Program`**
+## **Game**
 
-#### **Riassunto del funzionamento della classe:**
+### **Riassunto**:
 
-`Program` contiene la logica principale del gioco. Gestisce il ciclo di aggiornamento e disegno delle entità, oltre alla gestione delle collisioni e alla transizione delle entità tra le liste attive e inattive.
+La classe `Game` gestisce l'intero ciclo di gioco, incluse la creazione della finestra, il ciclo di aggiornamento e disegno delle entità e la gestione delle collisioni tra entità.
 
-#### **Attributi:**
+### **Attributi**:
 
--   **`activeEntities`** (`List<Entity>`): Lista delle entità attive attualmente in gioco (es. player, nemici, power-up).
--   **`inactiveEntities`** (`List<Entity>`): Lista delle entità inattive (ad esempio, proiettili non in uso).
--   **`player`** (`Player`): Riferimento all'istanza del giocatore.
+-   **window** (`Window`): La finestra del gioco.
+-   **activeEntities** (`List<Entity>`): Lista delle entità attive nel gioco.
+-   **inactiveEntities** (`List<Entity>`): Lista delle entità inattive.
 
-#### **Metodi:**
+### **Metodi**:
 
--   **`Run()`**: Avvia il ciclo di gioco, che continua finché la finestra è aperta. Chiama il metodo `Update` per aggiornare tutte le entità e `Draw` per disegnarle.
--   **`Update()`**: Aggiorna tutte le entità attive, gestisce le collisioni tra player, nemici e proiettili, e controlla se qualche entità deve essere rimossa o distrutta.
--   **`Draw()`**: Disegna tutte le entità attive sulla finestra di gioco.
+-   **Game()**: Costruttore che inizializza la finestra, crea il giocatore, i nemici, i power-up e prealloca i proiettili.
+-   **void Run()**: Metodo principale che avvia il ciclo di gioco.
+-   **void Update()**: Aggiorna tutte le entità attive, gestisce le collisioni tra giocatore, nemici, proiettili e power-up.
+-   **void Draw()**: Disegna tutte le entità attive sullo schermo.
+
 * * *
 
 ### **7\. Todo**
 
-1.  **Power-up**: Il power-up1 ti rende invulnerabile, mentre il powerup2 potenzia l'attacco. Deve essere implementato in player.cs tramite la macchina a stati già implementata. La texture dello sprite del giocatore cambia in base al powerup.
-2.  **Nemici**: Il nemico1 ha un moto sinusoidale che lo fa oscillare su e giù.
-3.  **Livelli**: Lo scorrimento orizzontale avviene muovendo tutte le entità eccetto il player verso le ascisse negative. I livelli possono essere realizzati in modo semplice istanziando i nemici nella lista delle entità inattive, per poi essere spostati nella lista delle entità attive un po' per volta. Si possono creare dei layout di nemici da pescare casualmente dalla lista per avere più varietà nei livelli.
-4.  **Interfaccia**: In alto a destra viene visualizzata la vita rimanente al giocatore e in alto a sinistra il punteggio.
-5.  **Sfondo**: Facendo muovere 3 sfondi con le stelle di diversa luminosità a 3 velocità diverse si ottiene un bellissimo effetto parallasse.
-6.  **Title-Screen, Game Over, Win**: In program.cs si può implementare una macchina a stati che definisce in quale scena ti trovi ed è possibile quindi passare da Title Screen a Partita a Game Over.
-7.  **Condizione di vittoria**: Dopo 5 minuti dall'inizio della partita, se il giocatore è ancora in vita vince la partita.
-8.  **Animazioni**: Non so se è possibile utilizzare le gif per le animazioni, ma in caso contrario posso usare uno spritesheet o una serie di immagini per ogni frame e modificare la texture in un arco di tempo per regolare la velocità di animazione.
+1.  **Nemici**: Il nemico1 ha un moto sinusoidale che lo fa oscillare su e giù.
+2.  **Livelli**: Lo scorrimento orizzontale avviene muovendo tutte le entità eccetto il player verso le ascisse negative. I livelli possono essere realizzati in modo semplice istanziando i nemici nella lista delle entità inattive, per poi essere spostati nella lista delle entità attive un po' per volta. Si possono creare dei layout di nemici da pescare casualmente dalla lista per avere più varietà nei livelli.
+3.  **Interfaccia**: In alto a destra viene visualizzata la vita rimanente al giocatore e in alto a sinistra il punteggio.
+4.  **Sfondo**: Facendo muovere 3 sfondi con le stelle di diversa luminosità a 3 velocità diverse si ottiene un bellissimo effetto parallasse.
+5.  **Title-Screen, Game Over, Win**: In program.cs si può implementare una macchina a stati che definisce in quale scena ti trovi ed è possibile quindi passare da Title Screen a Partita a Game Over.
+6.  **Condizione di vittoria**: Dopo 5 minuti dall'inizio della partita, se il giocatore è ancora in vita vince la partita.
+7.  **Animazioni**: Non so se è possibile utilizzare le gif per le animazioni, ma in caso contrario posso usare uno spritesheet o una serie di immagini per ogni frame e modificare la texture in un arco di tempo per regolare la velocità di animazione.
 
