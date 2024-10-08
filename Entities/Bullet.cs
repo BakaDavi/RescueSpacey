@@ -6,7 +6,7 @@ namespace RescueSpacey.Entities
     public class Bullet : Entity
     {
         // Percorso statico per la texture del proiettile
-        private static readonly string BulletTexturePath = "C:\\Users\\Baka\\source\\repos\\RescueSpacey\\Assets\\bullet.png";
+        private static readonly string BulletTexturePath = "Assets/bullet.png";
 
         // Posizione iniziale nullabile (Vector2? permette di avere null)
         private Vector2? InitialPosition = null;

@@ -23,23 +23,23 @@ namespace MyFast2DGame
             inactiveEntities = new List<Entity>();
 
             // Crea il player
-            player = new Player("C:\\Users\\Baka\\source\\repos\\RescueSpacey\\Assets\\player.gif", new Vector2(360, 360), 100, 100);
+            player = new Player("Assets/player.gif", new Vector2(360, 360), 100, 100);
             activeEntities.Add(player);
 
             // Crea il nemico 1 (con 50 punti vita e 10 di atk)
-            Enemy enemy1 = new Enemy(1, "C:\\Users\\Baka\\source\\repos\\RescueSpacey\\Assets\\enemy1.png", new Vector2(100, 100), 50, 10);
+            Enemy enemy1 = new Enemy(1, "Assets/enemy1.png", new Vector2(100, 100), 50, 10);
             activeEntities.Add(enemy1);
 
             // Crea il nemico 2 (con 70 punti vita e 20 di atk)
-            Enemy enemy2 = new Enemy(2, "C:\\Users\\Baka\\source\\repos\\RescueSpacey\\Assets\\enemy2.png", new Vector2(500, 100), 70, 20);
+            Enemy enemy2 = new Enemy(2, "Assets/enemy2.png", new Vector2(500, 100), 70, 20);
             activeEntities.Add(enemy2);
 
             // Crea il power-up 1
-            PowerUp powerUp1 = new PowerUp(1, "C:\\Users\\Baka\\source\\repos\\RescueSpacey\\Assets\\powerup1.png", new Vector2(200, 200));
+            PowerUp powerUp1 = new PowerUp(1, "Assets/powerup1.png", new Vector2(200, 200));
             activeEntities.Add(powerUp1);
 
             // Crea il power-up 2
-            PowerUp powerUp2 = new PowerUp(2, "C:\\Users\\Baka\\source\\repos\\RescueSpacey\\Assets\\powerup2.png", new Vector2(400, 400));
+            PowerUp powerUp2 = new PowerUp(2, "Assets/powerup2.png", new Vector2(400, 400));
             activeEntities.Add(powerUp2);
 
             // Crea 20 proiettili e li aggiunge alla lista delle entità inattive
